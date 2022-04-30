@@ -2,7 +2,7 @@ deps:
 	pip install -r requirements.txt
 
 run:
-	PYTHONPATH=$(shell pwd)/src src/hosted_boggle_python/server.py
+	PYTHONPATH=$(shell pwd) runtime/bin/gunicorn -c gunicorn.conf src.boggle.application:WEB_SERVER
 
 test:
-	PYTHONPATH=$(shell pwd)/src python -m unittest -v tests/handlers.py tests/server.py
+	PYTHONPATH=$(shell pwd)/src runtime/bin/python -m pytest -v tests
