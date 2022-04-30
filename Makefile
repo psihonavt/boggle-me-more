@@ -1,5 +1,9 @@
+build:
+	python3 -m virtualenv runtime
+	runtime/bin/pip install -r requirements.txt
+
 deps:
-	pip install -r requirements.txt
+	bin/runtime/pip install -r requirements.txt
 
 run:
 	PYTHONPATH=$(shell pwd) runtime/bin/python src/boggle/server.py
