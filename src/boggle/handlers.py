@@ -11,21 +11,24 @@ from src.boggle.domain import BoggleBoard
 class BoggleBoardSolverHandler(web.RequestHandler):
 
     def post(self):
-        if self.request.headers["Content-Type"] != "application/json":
+        if self.request.headers.get("Content-Type") != "application/json":
             self.set_status(406)
             self.finish("Please submit request as a valid JSON")
+            return
 
         try:
             request = json_decode(self.request.body)
-        except TypeError:
+        except (TypeError, ValueError):
             self.set_status(406)
             self.finish("Please submit request as a valid JSON")
+            return
 
         try:
             bboard = BoggleBoard.parse(request)
         except ValidationError as ex:
             self.set_status(409)
             self.finish("Invalid request: {}".format(ex.message))
+            return
 
         try:
             solved_board = BOGGLE_SOLVER.solve(bboard)
